@@ -176,7 +176,7 @@ var _ = {};
   		accumulator = collection[0];
   		}
   	for (var key in collection){
-  		accumulator=iterator(accumulator, collection[key]);
+  		accumulator = iterator(accumulator, collection[key]);
   		};
   	return accumulator;
   };
@@ -198,15 +198,15 @@ var _ = {};
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     return _.reduce(collection, function(prevResult, item){
-    	if(iterator === undefined && item ){
-    		return true;
-    	} else if (prevResult && iterator(item)){
+    	if(iterator === undefined){
+    		return item;
+    	} else if (iterator(item)&&prevResult){
     		return true;
     	}
     	else {
     		return false;
     	};
-    },true);
+    }, true);
     
     	
     	
@@ -216,7 +216,15 @@ var _ = {};
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    	
+	return !(_.every(collection, function(item) {
+		if (iterator === undefined){
+			return !item;
+			}
+		else {
+			return !iterator(item);
+		}
+		}
+		));
   };
 
 
