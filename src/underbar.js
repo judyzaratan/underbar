@@ -306,6 +306,17 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+  	var argumentCheck = [];
+  	var results = [];
+  	return function(input) {
+  		if(_.indexOf(argumentCheck, input) != -1){
+  			return results[_.indexOf(argumentCheck,input)];
+  		} else {
+  			argumentCheck.push(input);
+  			results.push(func(input));
+  			return func(input);
+  		}
+  	};
   };
 
   // Delays a function for the given number of milliseconds, and then calls
