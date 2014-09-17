@@ -331,7 +331,7 @@ var _ = {};
   		passedArgs.push(arguments[i]);
   		};
     return setTimeout(function(){
-      return func.apply(this, passedArgs);
+      return func.apply(null, passedArgs);
     }, wait);
   
   };
@@ -348,7 +348,17 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
-  };
+  	var copyArr = array.slice();
+  	var shuffleArr = [];
+  	var index = 0;
+  	while (copyArr.length != 0 ) {
+  		index = Math.floor(Math.random() * copyArr.length);
+  		shuffleArr.push(copyArr[index]);
+  		copyArr.splice(index,1);
+  	};
+  	return shuffleArr;
+  	};
+  
 
 
   /**
