@@ -119,11 +119,7 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-  	//Create a copy of passed in array
   	var uniqueArray = [];
-  	var length = array.length;
-
-  	
   	//Loop through passed in array
   	_.each(array, function(value, key, array){
 		//Check to see if array item is already in the unique array
@@ -145,9 +141,10 @@ var _ = {};
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
     var results = [];
-  	for (var i = 0; i < collection.length; i++) {
-  		results.push(iterator(collection[i]));
-  	};
+    //Use each to iterate through collection and push iterator results to result
+  	_.each(collection, function(value){
+  		results.push(iterator(value));
+  	});
   	return results;
   };
 
@@ -172,7 +169,21 @@ var _ = {};
   // Calls the method named by functionOrKey on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-  	var results = [];
+
+  	var results = _.map(collection, function(value, key){
+  		if(typeof functionOrKey ==='string'){
+  			//Accesss function through string
+  			return (value[functionOrKey](args));
+  			}
+  		else{
+  			//Uses .apply functionand 
+  			return (functionOrKey.apply(value, args));
+  			}
+  			});
+  	return results;
+  	
+  	
+/*
 	for (var key in collection){
 		if (typeof functionOrKey === 'string'){
 		results.push(collection[key][functionOrKey]());
@@ -180,7 +191,7 @@ var _ = {};
 		results.push(functionOrKey.apply(collection[key], args));}
 		};
 	return results;
-  		
+*/
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -397,6 +408,7 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+  	
   };
 
   // Zip together two or more arrays with elements of the same index
