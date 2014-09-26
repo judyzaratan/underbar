@@ -211,9 +211,10 @@ var _ = {};
   	if (arguments.length == 2 ){
   		accumulator = collection[0];
   		}
-  	for (var key in collection){
-  		accumulator = iterator(accumulator, collection[key]);
-  		};
+  	//Go through each item in collection and apply iterator and add 
+  	_.each(collection, function(value){
+  		accumulator = iterator(accumulator, value);
+  		});
   	return accumulator;
   };
 
