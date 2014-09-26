@@ -39,6 +39,9 @@ var _ = {};
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
+  	//Checks to see if n is undefined, return last element
+  	//Else, if n equal 0, return an empty array
+  	//Else, return the last n elements of array (ie -2) returns last two elements
 	return n === undefined ? array[array.length - 1] : n === 0 ? [] : array.slice(-n);
   };
 
@@ -48,11 +51,15 @@ var _ = {};
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
+  	//Check to see if it is an object, proceed to use 'for in'
   	if(collection.length === undefined){
+  		//Go through each property and apply iterator function
   		for (var key in collection) { 
+  			//Passes in value in property, property, and object
   			iterator(collection[key], key, collection);
   		};
   		} else {
+  		//Go through array and apply iterator function
   		for (var i = 0; i < collection.length; i++) {
   			iterator(collection[i], i, collection);
   		};
@@ -78,12 +85,15 @@ var _ = {};
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
-	var truthArray = [];
-	for (var i = 0; i < collection.length; i++){
-		if (test(collection[i])){
-			truthArray.push(collection[i]);
-			}
-			};
+  	//Return array
+  	var truthArray = [];
+  	//Applies each function to iterate through the collection
+  	_.each(collection, function(value, key, collection){
+  		//If truth test returns true, element to result array
+  		if(test(collection[key]))
+  			truthArray.push(collection[key]);
+  			});
+	
 	return truthArray; 
 
   };
@@ -92,25 +102,40 @@ var _ = {};
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    
+    //Return array
     var falseArray = [];
-	_.filter(collection, function(item) { if (!test(item)){
-		falseArray.push(item);
-		};});
+    
+    //Reuse filter and checks
+	_.filter(collection, function(item) { 
+		//If test returns false, push  element to false array
+		if (!test(item)){
+			falseArray.push(item);
+			};
+		});
 	return falseArray;
     
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-  	var uniqueArray = array;
-	for (var i = 0; i < array.length; i++){
-		for (var a = i + 1; a < array.length; a++){
-			if (array[i] === uniqueArray[a]){
-				uniqueArray.splice(a,1);
-			};
-		};
-	};
-	return uniqueArray;		
+  	//Create a copy of passed in array
+  	var uniqueArray = [];
+  	var length = array.length;
+
+  	
+  	//Loop through passed in array
+  	_.each(array, function(value, key, array){
+		//Check to see if array item is already in the unique array
+		//If not, push value into unique array
+			if(_.indexOf(uniqueArray, value)<0){
+				uniqueArray.push(value);
+				}
+		});
+
+	return uniqueArray;			
+  		
+
   };
 
 
