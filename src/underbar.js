@@ -119,19 +119,24 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+  	var check = 0;
   	var uniqueArray = [];
   	//Loop through passed in array
-  	_.each(array, function(value, key, array){
-		//Check to see if array item is already in the unique array
-		//If not, push value into unique array
-			if(_.indexOf(uniqueArray, value)<0){
-				uniqueArray.push(value);
+  	
+	for (var i = 0; i < array.length; i++){
+		for(var k = 0; k< uniqueArray.length; k++){
+			if(uniqueArray[k] === array[i]){
+				check += -1;
 				}
-		});
+		}
+		if (check === 0){
+			uniqueArray.push(array[i]);
+			}
+		check = 0;
+			
 
+	}	
 	return uniqueArray;			
-  		
-
   };
 
 
@@ -142,10 +147,18 @@ var _ = {};
     // the members, it also maintains an array of results.
     var results = [];
     //Use each to iterate through collection and push iterator results to result
-  	_.each(collection, function(value){
-  		results.push(iterator(value));
-  	});
-  	return results;
+	if (collection.length === undefined){
+		for (var key in collection) { 
+		//Passes in value in property, property, and object
+		results.push(iterator(collection[key], key, collection));
+		}
+	} else{
+		for (var i = 0; i < collection.length; i++) {
+			results.push(iterator(collection[i]));
+		}
+	}
+	return results;
+
   };
 
   /*
@@ -344,17 +357,21 @@ var _ = {};
   // instead if possible.
   _.memoize = function(func) {
   	var argumentCheck = [];
-  	var results = [];
-  	return function(input) {
-  		if(_.indexOf(argumentCheck, input) != -1){
-  			return results[_.indexOf(argumentCheck,input)];
-  		} else {
-  			argumentCheck.push(input);
-  			results.push(func(input));
-  			return func(input);
-  		}
-  	};
+    var results = [];
+    return function(input) {
+      if (argumentCheck.length != 0){
+        for(var i = 0; i<argumentCheck.length; i++){
+          if (argumentCheck[i] === input)
+          {
+            return results[i];
+          }  
+        }
+    }
+    argumentCheck.push(input);
+    results.push(func(input));
+    return func(input);
   };
+};
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
